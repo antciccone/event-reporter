@@ -1,6 +1,5 @@
-require 'minitest/autorun'
-require 'minitest/pride'
 require './lib/help.rb'
+require_relative '../test/test_helper'
 
 class HelpTest < Minitest::Test
 

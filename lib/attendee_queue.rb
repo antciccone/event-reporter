@@ -1,11 +1,8 @@
 require 'csv'
 require_relative 'attendee'
 require_relative 'help'
-
-
-# require 'sunlight/congress'
-
-# Sunlight::Congress.api_key = "e179a6973728c4dd3fb1204283aaccb5"
+require 'open-uri'
+require 'json'
 
 class AttendeeQueue
 
@@ -37,29 +34,32 @@ class AttendeeQueue
      @queue
   end
 
-  # def District
-  #   if @queue.count < 10
-  #     queue.each do |row|
-  #       legislators_by_zipcode(row.zipcode)
-  #     end
-  #   end
-  # end
-  #
-  # def legislators_by_zipcode(zipcode)
-  #   legislators =  Sunlight::Congress::Legislator.by_zipcode(zipcode)
-  #
-  # end
+  def set_district
+    @queue.each do |record|
+      record.district = get_districts(record.zipcode)
+    end
+  end
+
+  def get_districts(zipcode)
+    url = "http://congress.api.sunlightfoundation.com/districts/locate?zip=#{zipcode}&apikey=7f37e6069038458d9d3cb6001c8d560e"
+    data = JSON.parse(open(url).read)
+    data_parsed = data.values[0]
+    district_and_state = data_parsed.map do |record|
+      "#{record["state"]}: #{record["district"]}"
+    end
+    data_return = district_and_state.join(" / ")
+    return data_return
+  end
 
   def prints(queue = @queue)
-    # puts "LAST NAME FIRST NAME EMAIL ZIPECODE CITY STATE ADDRESS PHONE DISTRICT"
     header = "\nLAST NAME".ljust(15) + "FIRST NAME".ljust(15) + "EMAIL".ljust(45) + "ZIPCODE".ljust(15) + "CITY".ljust(30) + "STATE".ljust(10) + "ADDRESS".ljust(40) \
     + "PHONE".ljust(15) + "DISTRICT"
     puts header
     queue.each do |data|
       puts
       a = "#{data.send(:last_name).ljust(15)}" + "#{data.send(:first_name).ljust(15)}" + "#{data.send(:email_address).ljust(45)}" \
-     + "#{data.send(:zipcode).ljust(15)}" + "#{data.send(:city).ljust(30)}" + "#{data.send(:state).ljust(10)}" + "#{data.send(:street).ljust(40)}" + "#{data.send(:homephone).ljust(15)}\n"
-
+     + "#{data.send(:zipcode).ljust(15)}" + "#{data.send(:city).ljust(30)}" + "#{data.send(:state).ljust(10)}" + "#{data.send(:street).ljust(40)}" + "#{data.send(:homephone).ljust(15)}" \
+     + "#{data.send(:district)}\n"
       print a
     end
   end
@@ -67,17 +67,6 @@ class AttendeeQueue
   def print_by(attribute)
     @sorted_queue = @queue.sort_by { |att| att.send(attribute) }
     prints(@sorted_queue)
-
-    # header = "\nLAST NAME".ljust(15) + "FIRST NAME".ljust(15) + "EMAIL".ljust(45) + "ZIPCODE".ljust(15) + "CITY".ljust(30) + "STATE".ljust(10) + "ADDRESS".ljust(40) \
-    # + "PHONE".ljust(15) + "DISTRICT"
-    # puts header
-    # @printed_queue.each do |data|
-    #   puts
-    #   a = "#{data.send(:last_name).ljust(15)}" + "#{data.send(:first_name).ljust(15)}" + "#{data.send(:email_address).ljust(45)}" \
-    #  + "#{data.send(:zipcode).ljust(15)}" + "#{data.send(:city).ljust(30)}" + "#{data.send(:state).ljust(10)}" + "#{data.send(:street).ljust(40)}" + "#{data.send(:homephone).ljust(15)}"
-    #
-    #   print a
-    # end
   end
 
 

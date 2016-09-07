@@ -1,8 +1,6 @@
-
-require 'minitest/autorun'
-require 'minitest/pride'
 require './lib/attendee'
 require 'pry'
+require_relative '../test/test_helper'
 
 class AttendeeTest < Minitest::Test
 
@@ -17,7 +15,8 @@ class AttendeeTest < Minitest::Test
       street:         "42 brookside drive",
       city:           "Sparta",
       state:          "NJ",
-      zipcode:        "07871"
+      zipcode:        "07871",
+      district:       "nil"
     }
   end
 
@@ -76,4 +75,4 @@ class AttendeeTest < Minitest::Test
     assert_equal "xx", person.clean_state(nil)
     assert_equal "xx", person.clean_state("")
   end
-end 
+end

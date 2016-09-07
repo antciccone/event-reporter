@@ -13,6 +13,8 @@ class Attendee
               :regdate,
               :data
 
+  attr_accessor  :district
+
   def initialize(data)
     @first_name     = clean_first_name(data[:first_name])
     @last_name      = clean_last_name(data[:last_name])
@@ -24,6 +26,7 @@ class Attendee
     @zipcode        = clean_zipcode(data[:zipcode])
     @id             = data[:id]
     @regdate        = data[:regdate]
+    @district       = clean_district(data[:district])
   end
 
   def clean_first_name(first_name)
@@ -52,5 +55,13 @@ class Attendee
 
   def clean_homephone(homephone)
   homephone.to_s.gsub(/[^0-9]/, "").ljust(10,"0")[-10..-1]
+  end
+
+  def clean_district(district)
+    if district.nil?
+      district = "unknown"
+    else
+      district
+    end
   end
 end

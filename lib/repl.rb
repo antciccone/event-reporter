@@ -42,8 +42,6 @@ class Repl
       when "find"  then  find
       when "queue" then queue
       when "help"  then help
-      # default
-      #   puts "that doesn't exist, try again"
     end
   end
 
@@ -67,6 +65,7 @@ class Repl
     when "print"     then @attendee_queue.prints
     when "print by"  then @attendee_queue.print_by(@new_attribute)
     when "save to"   then @attendee_queue.save(@new_attribute)
+    when "district"  then @attendee_queue.set_district
     end
   end
 
@@ -96,6 +95,3 @@ class Repl
     @attendee_queue.load_file(file_path)
   end
 end
-
-i = Repl.new
-i.run
