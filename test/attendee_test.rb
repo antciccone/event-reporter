@@ -76,4 +76,4 @@ class AttendeeTest < Minitest::Test
     assert_equal "xx", person.clean_state(nil)
     assert_equal "xx", person.clean_state("")
   end
-end
+end 

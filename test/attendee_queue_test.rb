@@ -23,10 +23,10 @@ class AttendeeQueuetest < Minitest::Test
   def test_can_find_by_first_name_and_count
     file = AttendeeQueue.new
     file.load_file("event_attendees.csv")
-    file.find_by("first_name","allison")
+    file.find_by("first_name","John")
 
-    assert_equal file.queue[0].first_name, "allison"
-    assert_equal 16, file.count
+    assert_equal file.queue[0].first_name, "john"
+    assert_equal 63, file.count
   end
 
   def test_can_find_by_last_name_and_count
@@ -56,5 +56,37 @@ class AttendeeQueuetest < Minitest::Test
 
     assert_equal file.queue[0].zipcode, "92037"
     assert_equal 3, file.count
+  end
+
+  def test_can_clear_the_queue
+    file = AttendeeQueue.new
+    file.load_file("event_attendees.csv")
+    file.find_by("zipcode","92037")
+
+    assert_equal 3, file.count
+
+    file.clear
+    assert_equal [], file.clear
+  end
+
+  def test_can_just_print_the_header
+    file = AttendeeQueue.new
+    assert_equal "LAST NAME FIRST NAME EMAIL ZIPECODE CITY STATE ADDRESS PHONE DISTRICT", file.prints
+  end
+
+  def test_can_print_queue
+
+    file = AttendeeQueue.new
+    file.load_file("event_attendees.csv")
+    file.find_by("first_name" , "john")  #how do assert equal?
+    file.print_by
+  end
+
+  def test_can_save_queue_to_anotehr_file
+
+    file = AttendeeQueue.new
+    file.load_file("event_attendees.csv")  #how to asset equal?
+    file.find_by("first_name" , "john")
+    file.save("john search.csv")
   end
 end
