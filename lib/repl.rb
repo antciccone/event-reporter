@@ -14,8 +14,11 @@ class Repl
   end
 
   def run
-    input = gets.chomp
+    puts "Welcome to Event Reporter"
+    input = ""
     until input == "quit"
+      puts "Please enter a command:"
+      input = gets.chomp
       @command = split_input(input)
       assign_input_instructions
       first_demand
@@ -38,33 +41,47 @@ class Repl
       when "find"  then  find
       when "queue" then queue
       when "help"  then help
+      # default
+      #   puts "that doesn't exist, try again"
     end
   end
 
   def find
-    #if queue is not empty i need to clear it
-    case criteria
-    when "first_name" then @attendee_queue.find_by("first_name", attribute)
-    when "last_name"  then @attribute_queue.find_by("last_name", attribute)
-    when "city "    then @attribute_queue.find_by("city", attribute)
-    when "state"    then @attribute_queue.find_by("state", attribute)
+    combine_last_index
+    attendee_queue.clear if @attendee_queue.count != 0
+    @attendee_queue.find_by(criteria, attribute)
+  end
+
+  def combine_last_index
+    @fixed_criteria = command[2..1]
+    binding.pry
+  end
+  
+  def queue
+    combine_by_and_combine_to
+    case @new_criteria
+    when "count"
+      puts @attendee_queue.count
+    when "clear"     then @attendee_queue.clear
+      puts "queue is cleared"
+    when "print"     then @attendee_queue.prints
+    when "print by"  then @attendee_queue.print_by(@new_attribute)
+    when "save to"   then @attendee_queue.save(@new_attribute)
     end
   end
 
-  def queue
-    case criteria
-    when "count"    then  @attribute_queue.count
-    when "clear"    then
-    when "prints"   then
-    when "pint_by"  then
-    when "save to"  then
+  def combine_by_and_combine_to
+    if attribute == 'by' || attribute == 'to'
+      @new_criteria = command[1..2].join(" ")
+      @new_attribute = command[3]
+    else
+      @new_criteria = criteria
     end
   end
 
   def help
-
+    criteria.nil? ? Help.send("general") : Help.send(criteria && attribute)
   end
-
 
   def load_finder
     if criteria != nil
@@ -72,6 +89,7 @@ class Repl
     else
       load_file
     end
+    puts "File was loaded!"
   end
 
   def load_file(file_path = "event_attendees.csv")

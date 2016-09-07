@@ -3,9 +3,9 @@ require_relative 'attendee'
 require_relative 'help'
 
 
-require 'sunlight/congress'
+# require 'sunlight/congress'
 
-Sunlight::Congress.api_key = "e179a6973728c4dd3fb1204283aaccb5"
+# Sunlight::Congress.api_key = "e179a6973728c4dd3fb1204283aaccb5"
 
 class AttendeeQueue
 
@@ -30,7 +30,7 @@ class AttendeeQueue
   end
 
   def count
-    @queue.count 
+    @queue.length
   end
 
   def print_queue
@@ -50,21 +50,34 @@ class AttendeeQueue
   #
   # end
 
-  def prints
-    header = "LAST NAME FIRST NAME EMAIL ZIPECODE CITY STATE ADDRESS PHONE DISTRICT"
-  end
-
-  def print_by
+  def prints(queue = @queue)
+    # puts "LAST NAME FIRST NAME EMAIL ZIPECODE CITY STATE ADDRESS PHONE DISTRICT"
     header = "\nLAST NAME".ljust(15) + "FIRST NAME".ljust(15) + "EMAIL".ljust(45) + "ZIPCODE".ljust(15) + "CITY".ljust(30) + "STATE".ljust(10) + "ADDRESS".ljust(40) \
     + "PHONE".ljust(15) + "DISTRICT"
     puts header
-    @queue.each do |data|
+    queue.each do |data|
       puts
       a = "#{data.send(:last_name).ljust(15)}" + "#{data.send(:first_name).ljust(15)}" + "#{data.send(:email_address).ljust(45)}" \
-     + "#{data.send(:zipcode).ljust(15)}" + "#{data.send(:city).ljust(30)}" + "#{data.send(:state).ljust(10)}" + "#{data.send(:street).ljust(40)}" + "#{data.send(:homephone).ljust(15)}"
+     + "#{data.send(:zipcode).ljust(15)}" + "#{data.send(:city).ljust(30)}" + "#{data.send(:state).ljust(10)}" + "#{data.send(:street).ljust(40)}" + "#{data.send(:homephone).ljust(15)}\n"
 
       print a
     end
+  end
+
+  def print_by(attribute)
+    @sorted_queue = @queue.sort_by { |att| att.send(attribute) }
+    prints(@sorted_queue)
+
+    # header = "\nLAST NAME".ljust(15) + "FIRST NAME".ljust(15) + "EMAIL".ljust(45) + "ZIPCODE".ljust(15) + "CITY".ljust(30) + "STATE".ljust(10) + "ADDRESS".ljust(40) \
+    # + "PHONE".ljust(15) + "DISTRICT"
+    # puts header
+    # @printed_queue.each do |data|
+    #   puts
+    #   a = "#{data.send(:last_name).ljust(15)}" + "#{data.send(:first_name).ljust(15)}" + "#{data.send(:email_address).ljust(45)}" \
+    #  + "#{data.send(:zipcode).ljust(15)}" + "#{data.send(:city).ljust(30)}" + "#{data.send(:state).ljust(10)}" + "#{data.send(:street).ljust(40)}" + "#{data.send(:homephone).ljust(15)}"
+    #
+    #   print a
+    # end
   end
 
 
