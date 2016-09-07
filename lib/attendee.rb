@@ -47,7 +47,7 @@ class Attendee
   end
 
   def clean_city(city)
-    city.split.map {|word| word.capitalize}.join(' ') if city != nil
+    city.split.map {|word| word.downcase}.join(' ') if city != nil
   end
 
   def clean_homephone(homephone)

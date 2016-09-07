@@ -11,6 +11,7 @@ class Repl
     @demand  = ""
     @criteria = ""
     @attribute = ""
+    @fix = ""
   end
 
   def run
@@ -49,14 +50,13 @@ class Repl
   def find
     combine_last_index
     attendee_queue.clear if @attendee_queue.count != 0
-    @attendee_queue.find_by(criteria, attribute)
+    @attendee_queue.find_by(criteria, @fix)
   end
 
   def combine_last_index
-    @fixed_criteria = command[2..1]
-    binding.pry
+    @fix = command[2..-1].join(" ")
   end
-  
+
   def queue
     combine_by_and_combine_to
     case @new_criteria
