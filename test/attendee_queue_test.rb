@@ -70,6 +70,7 @@ class AttendeeQueuetest < Minitest::Test
 
   def test_can_just_print_the_header
     file = AttendeeQueue.new
+    file.find_by("first_name","anthony")
     assert_equal "LAST NAME FIRST NAME EMAIL ZIPECODE CITY STATE ADDRESS PHONE DISTRICT", file.prints
   end
 
@@ -78,7 +79,7 @@ class AttendeeQueuetest < Minitest::Test
     file = AttendeeQueue.new
     file.load_file("event_attendees.csv")
     file.find_by("first_name" , "john")  #how do assert equal?
-    file.print_by
+
   end
 
   def test_can_save_queue_to_anotherfile

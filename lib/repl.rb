@@ -1,6 +1,7 @@
 require './lib/attendee_queue'
 require_relative 'attendee_queue'
 require_relative 'help'
+require_relative 'file_generation'
 require 'pry'
 
 class Repl
@@ -60,17 +61,19 @@ class Repl
     case @new_criteria
     when "count"
       puts @attendee_queue.count
-    when "clear"     then @attendee_queue.clear
+    when "clear"       then @attendee_queue.clear
       puts "queue is cleared"
-    when "print"     then @attendee_queue.prints
-    when "print by"  then @attendee_queue.print_by(@new_attribute)
-    when "save to"   then @attendee_queue.save(@new_attribute)
-    when "district"  then @attendee_queue.set_district
+    when "print"       then @attendee_queue.prints
+    when "print by"    then @attendee_queue.print_by(@new_attribute)
+    when "save to"     then @attendee_queue.save(@new_attribute)
+    when "district"    then @attendee_queue.set_district
+    binding.pry
+    when "export html" then FileGeneration.export_html(@new_attribute, @attendee_queue.queue)
     end
   end
 
   def combine_by_and_combine_to
-    if attribute == 'by' || attribute == 'to'
+    if attribute == 'by' || attribute == 'to' || attribute == 'html'
       @new_criteria = command[1..2].join(" ")
       @new_attribute = command[3]
     else
@@ -80,6 +83,7 @@ class Repl
 
   def help
     criteria.nil? ? Help.send("general") : Help.send(criteria && attribute)
+    binding.pry
   end
 
   def load_finder

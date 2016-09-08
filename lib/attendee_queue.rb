@@ -5,6 +5,7 @@ require 'open-uri'
 require 'json'
 
 class AttendeeQueue
+  HEADER = ["LAST NAME","FIRST NAME","EMAIL","ZIPCODE","CITY","STATE","ADDRESS","PHONE","DISTRICT"]
 
   attr_accessor :attendee_info, :queue
   def initialize

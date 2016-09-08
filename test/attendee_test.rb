@@ -30,7 +30,7 @@ class AttendeeTest < Minitest::Test
     assert_equal "aciccone@yahoo.com", person.email_address
     assert_equal "9735257892", person.homephone
     assert_equal "42 brookside drive", person.street
-    assert_equal "Sparta", person.city
+    assert_equal "sparta", person.city
     assert_equal "nj", person.state
     assert_equal "07871", person.zipcode
   end
