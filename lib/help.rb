@@ -2,7 +2,7 @@ require 'pry'
 
 module Help
   def self.general
-    p "The available commands are: [load <filename>] [queue count] [queue clear] [queue print] [queue print by <attribute>] [queue save to <filename.csv>] [find <attribute> <criteria>]  Type  the command name to learn more about each command"
+    p "Type help + command to learn more: [queue load <filename>] [queue count] [queue clear] [queue print] [queue print_by <attribute>] [queue save_to <filename.csv>] [find <attribute> <criteria>]"
   end
 
   def self.count

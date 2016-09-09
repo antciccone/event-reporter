@@ -54,7 +54,7 @@ class Attendee
   end
 
   def clean_homephone(homephone)
-  homephone.to_s.gsub(/[^0-9]/, "").ljust(10,"0")[-10..-1]
+    homephone.to_s.gsub(/[^0-9]/, "").ljust(10,"0")[-10..-1]
   end
 
   def clean_district(district)

@@ -6,7 +6,7 @@ class HelpTest < Minitest::Test
   def test_prints_general_information
 
 
-    assert_match /The available commands are:/, Help.general
+    assert_match /Type help/, Help.general
   end
 
   def test_prints_desciption_for_count_command

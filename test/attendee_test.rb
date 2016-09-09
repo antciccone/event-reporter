@@ -8,19 +8,19 @@ class AttendeeTest < Minitest::Test
     {
       id: 1,
       regdate:        "September 4, 2016",
-      first_name:     "Anthony",
+      first_name:     "ANTHONY",
       last_name:      "Ciccone",
       email_address:  "aciccone@yahoo.com",
-      homephone:     "9735257892",
+      homephone:      "973-525-7892",
       street:         "42 brookside drive",
-      city:           "Sparta",
+      city:           "SPaRta",
       state:          "NJ",
-      zipcode:        "07871",
+      zipcode:        "7871",
       district:       "nil"
     }
   end
 
-  def test_can_intake_the_proper_data
+  def test_can_clean_input_data_into_a_proper_format
     person = Attendee.new(data)
 
     assert_equal 1, person.id
@@ -49,7 +49,7 @@ class AttendeeTest < Minitest::Test
     assert_equal "00000", person.clean_zipcode("")
   end
 
-  def test_is_can_clean_wrongly_formatted_home_phome_numbers
+  def test_is_can_clean_wrongly_formatted_homephome_numbers
     person = Attendee.new(data)
 
     proper_home_phone = "9737268512"
@@ -74,5 +74,36 @@ class AttendeeTest < Minitest::Test
     assert_equal "ny", person.clean_state(proper_state)
     assert_equal "xx", person.clean_state(nil)
     assert_equal "xx", person.clean_state("")
+  end
+
+  def test_it_can_clean_wrongly_formatted_city
+    person = Attendee.new(data)
+
+    proper_city = "salt lake city"
+    upcase_city = "Salt Lake City"
+
+    assert_equal "salt lake city", person.clean_city(proper_city)
+    assert_equal "salt lake city", person.clean_city(upcase_city)
+
+  end
+
+  def test_can_clean_wrongly_formatted_last_name
+    person = Attendee.new(data)
+
+    proper_name = "chen"
+    wrong_format = "ChEn"
+
+    assert_equal "chen", person.clean_last_name(proper_name)
+    assert_equal "chen", person.clean_last_name(wrong_format)
+  end
+
+  def test_can_clean_wrongly_formatted_last_name
+    person = Attendee.new(data)
+
+    proper_name = "melissa"
+    wrong_format = "MelissA"
+
+    assert_equal "melissa", person.clean_last_name(proper_name)
+    assert_equal "melissa", person.clean_last_name(wrong_format)
   end
 end

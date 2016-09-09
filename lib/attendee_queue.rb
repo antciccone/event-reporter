@@ -3,9 +3,9 @@ require_relative 'attendee'
 require_relative 'help'
 require 'open-uri'
 require 'json'
+require 'terminal-table'
 
 class AttendeeQueue
-  HEADER = ["LAST NAME","FIRST NAME","EMAIL","ZIPCODE","CITY","STATE","ADDRESS","PHONE","DISTRICT"]
 
   attr_accessor :attendee_info, :queue
   def initialize
@@ -24,7 +24,7 @@ class AttendeeQueue
   end
 
   def clear
-     @queue.clear
+    @queue.clear
   end
 
   def count
@@ -32,7 +32,7 @@ class AttendeeQueue
   end
 
   def print_queue
-     @queue
+    @queue
   end
 
   def set_district
@@ -53,14 +53,15 @@ class AttendeeQueue
   end
 
   def prints(queue = @queue)
+    # Header = ["LAST NAME","FIRST NAME","EMAIL","ZIPCODE","CITY","STATE","ADDRESS","PHONE","DISTRICT"]
     header = "\nLAST NAME".ljust(15) + "FIRST NAME".ljust(15) + "EMAIL".ljust(45) + "ZIPCODE".ljust(15) + "CITY".ljust(30) + "STATE".ljust(10) + "ADDRESS".ljust(40) \
     + "PHONE".ljust(15) + "DISTRICT"
     puts header
     queue.each do |data|
       puts
       a = "#{data.send(:last_name).ljust(15)}" + "#{data.send(:first_name).ljust(15)}" + "#{data.send(:email_address).ljust(45)}" \
-     + "#{data.send(:zipcode).ljust(15)}" + "#{data.send(:city).ljust(30)}" + "#{data.send(:state).ljust(10)}" + "#{data.send(:street).ljust(40)}" + "#{data.send(:homephone).ljust(15)}" \
-     + "#{data.send(:district)}\n"
+      + "#{data.send(:zipcode).ljust(15)}" + "#{data.send(:city).ljust(30)}" + "#{data.send(:state).ljust(10)}" + "#{data.send(:street).ljust(40)}" + "#{data.send(:homephone).ljust(15)}" \
+      + "#{data.send(:district)}\n"
       print a
     end
   end
@@ -72,10 +73,10 @@ class AttendeeQueue
 
 
   def save(to_file="queue_save.csv")
-      CSV.open(to_file, "w") do |file|
-        file << ['RegDate','first_Name','last_Name','Email_Address','HomePhone','Street','City','State','Zipcode']
-        queue.each do |entry|
-          file << [entry.regdate, entry.first_name, entry.last_name, entry.email_address, entry.homephone, entry.street, entry.city, entry.state, entry.zipcode]
+    CSV.open(to_file, "w") do |file|
+      file << ['RegDate','first_Name','last_Name','Email_Address','HomePhone','Street','City','State','Zipcode']
+      queue.each do |entry|
+        file << [entry.regdate, entry.first_name, entry.last_name, entry.email_address, entry.homephone, entry.street, entry.city, entry.state, entry.zipcode]
       end
     end
   end
